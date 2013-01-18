@@ -6,14 +6,10 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.rest" />
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.dao" />
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.service" />
-
 	<mvc:annotation-driven />
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/api/**" />
+			<mvc:mapping path="/**" />
 			<bean class="eu.fabiostrozzi.chirp.rest.AuthorizationInterceptor" autowire="byType"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

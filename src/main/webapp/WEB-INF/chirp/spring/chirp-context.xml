@@ -8,8 +8,7 @@
 
 	<context:component-scan base-package="eu.fabiostrozzi.chirp.rest" />
 	<context:component-scan base-package="eu.fabiostrozzi.chirp.dao" />
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.mock" />
+	<context:component-scan base-package="eu.fabiostrozzi.chirp.service" />
 
-	<import resource="classpath:/chirp/spring/mvc-context.xml"/>
-
+    <import resource="classpath:/chirp/spring/mvc-context.xml"/>
 </beans>
