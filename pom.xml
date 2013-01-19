@@ -17,6 +17,8 @@
 		<jetty.version>8.1.8.v20121106</jetty.version>
 		<jackson.version>1.9.11</jackson.version>
 		<plugin.war.version>2.3</plugin.war.version>
+		<mysql.version>5.1.22</mysql.version>
+		<dbcp.version>1.4</dbcp.version>
 
 		<!-- Jetty default web descriptor -->
 		<jetty.descriptor>src/main/webapp/WEB-INF/web.xml</jetty.descriptor>
@@ -54,9 +56,28 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- MySQL -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Connection pool -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${dbcp.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Logging -->
 		<dependency>

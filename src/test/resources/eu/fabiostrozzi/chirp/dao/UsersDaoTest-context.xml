@@ -4,13 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<context:property-placeholder location="classpath:/chirp/chirp.properties" />
-
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.rest" />
+	<context:property-placeholder location="classpath:/eu/fabiostrozzi/chirp/dao/test.properties" />
 	<context:component-scan base-package="eu.fabiostrozzi.chirp.dao" />
-	<context:component-scan base-package="eu.fabiostrozzi.chirp.service" />
 
-	<import resource="classpath:/chirp/spring/mvc-context.xml" />
 	<import resource="classpath:/chirp/spring/dao-context.xml" />
-
 </beans>

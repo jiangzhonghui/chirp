@@ -3,8 +3,8 @@ package eu.fabiostrozzi.chirp.service;
 
 import java.util.List;
 
-import eu.fabiostrozzi.chirp.model.Chirp;
-import eu.fabiostrozzi.chirp.model.User;
+import eu.fabiostrozzi.chirp.rest.Chirp;
+import eu.fabiostrozzi.chirp.rest.User;
 
 /**
  * @author fabio

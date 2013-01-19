@@ -1,5 +1,5 @@
 // Chirp.java, created on Jan 17, 2013
-package eu.fabiostrozzi.chirp.model;
+package eu.fabiostrozzi.chirp.rest;
 
 import java.util.Date;
 

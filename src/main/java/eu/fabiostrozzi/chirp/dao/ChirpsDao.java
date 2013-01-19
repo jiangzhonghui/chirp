@@ -4,8 +4,9 @@ package eu.fabiostrozzi.chirp.dao;
 import org.springframework.stereotype.Component;
 
 /**
- * @author fabio
+ * Database access layer for chirps.
  * 
+ * @author fabio
  */
 @Component
 public class ChirpsDao {

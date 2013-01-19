@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.fabiostrozzi.chirp.model.Chirp;
-import eu.fabiostrozzi.chirp.model.User;
+import eu.fabiostrozzi.chirp.rest.Chirp;
+import eu.fabiostrozzi.chirp.rest.User;
 import eu.fabiostrozzi.chirp.service.ChirpsService;
 
 /**

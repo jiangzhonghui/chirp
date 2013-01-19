@@ -1,8 +1,8 @@
 // Response.java, created on Jan 17, 2013
-package eu.fabiostrozzi.chirp.model;
+package eu.fabiostrozzi.chirp.rest;
 
-import static eu.fabiostrozzi.chirp.model.Response.ErrorCode.INTERNAL_ERROR;
-import static eu.fabiostrozzi.chirp.model.Response.ErrorCode.OK;
+import static eu.fabiostrozzi.chirp.rest.Response.ErrorCode.INTERNAL_ERROR;
+import static eu.fabiostrozzi.chirp.rest.Response.ErrorCode.OK;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import eu.fabiostrozzi.chirp.model.Chirp;
-import eu.fabiostrozzi.chirp.model.User;
 import eu.fabiostrozzi.chirp.service.ChirpsService;
 
 /**
