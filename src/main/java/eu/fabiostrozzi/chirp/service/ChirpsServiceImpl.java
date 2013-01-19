@@ -73,9 +73,10 @@ public class ChirpsServiceImpl implements ChirpsService {
      * java.lang.String)
      */
     @Override
-    public List<Chirp> searchChirpsOf(String user, String key) {
-        
-        return null;
+    public List<Chirp> searchChirpsFor(String user, String key) {
+        List<ChirpUserEntity> data = chirpsDao.findByUsernameAndKey(user, key);
+        List<Chirp> chirps = converter.restChirpsOf(data);
+        return chirps;
     }
 
     /*

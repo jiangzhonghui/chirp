@@ -36,7 +36,7 @@ public interface ChirpsService {
      * @param key
      * @return
      */
-    List<Chirp> searchChirpsOf(String user, String key);
+    List<Chirp> searchChirpsFor(String user, String key);
 
     /**
      * @param user

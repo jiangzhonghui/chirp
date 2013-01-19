@@ -121,7 +121,7 @@ public class MockedChirpsService implements ChirpsService {
      * java.lang.String)
      */
     @Override
-    public List<Chirp> searchChirpsOf(String user, String key) {
+    public List<Chirp> searchChirpsFor(String user, String key) {
         return getChirpsFor(user);
     }
 
