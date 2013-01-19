@@ -29,7 +29,7 @@ public interface ChirpsService {
      * @param user
      * @return
      */
-    List<Chirp> getChirpsOf(String user);
+    List<Chirp> getChirpsFor(String user);
 
     /**
      * @param user

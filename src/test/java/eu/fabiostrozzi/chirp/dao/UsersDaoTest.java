@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Tets the data access layer for the {@link UserData} entities.
+ * Tets the data access layer for the {@link UserEntity} entities.
  * 
  * @author fabio
  */
@@ -29,7 +29,7 @@ public class UsersDaoTest {
 
     @Test
     public void testGetByToken() {
-        UserData user = dao.getByToken("fc57c1fc-60fd-11e2-8d5b-544249f16afb");
+        UserEntity user = dao.getByToken("fc57c1fc-60fd-11e2-8d5b-544249f16afb");
         assertNotNull(user);
         assertEquals("fabio.strozzi", user.getUsername());
         assertEquals("Fabio", user.getFirstName());
@@ -42,7 +42,7 @@ public class UsersDaoTest {
 
     @Test
     public void testGetByUsername() {
-        UserData user = dao.getByUsername("fabio.strozzi");
+        UserEntity user = dao.getByUsername("fabio.strozzi");
         assertNotNull(user);
         assertEquals("fabio.strozzi", user.getUsername());
         assertEquals("Fabio", user.getFirstName());
@@ -55,7 +55,7 @@ public class UsersDaoTest {
 
     @Test
     public void testGetFollowers() {
-        List<UserData> users = dao.getFollowersOf("fabio.strozzi");
+        List<UserEntity> users = dao.getFollowersOf("fabio.strozzi");
         assertNotNull(users);
         assertEquals(1, users.size());
         assertEquals("jack.sparrow", users.get(0).getUsername());
@@ -65,7 +65,7 @@ public class UsersDaoTest {
         assertEquals(3, users.size());
 
         HashSet<String> usernames = new HashSet<>();
-        for (UserData ud : users)
+        for (UserEntity ud : users)
             usernames.add(ud.getUsername());
         assertTrue(usernames.contains("fabio.strozzi"));
         assertTrue(usernames.contains("jack.sparrow"));
@@ -74,7 +74,7 @@ public class UsersDaoTest {
 
     @Test
     public void testGetFollowedBy() {
-        List<UserData> users = dao.getFollowedBy("tiger.man");
+        List<UserEntity> users = dao.getFollowedBy("tiger.man");
         assertNotNull(users);
         assertEquals(1, users.size());
         assertEquals("hulk.hogan", users.get(0).getUsername());
@@ -84,7 +84,7 @@ public class UsersDaoTest {
         assertEquals(3, users.size());
 
         HashSet<String> usernames = new HashSet<>();
-        for (UserData ud : users)
+        for (UserEntity ud : users)
             usernames.add(ud.getUsername());
         assertTrue(usernames.contains("tiger.man"));
         assertTrue(usernames.contains("jack.sparrow"));
@@ -93,17 +93,17 @@ public class UsersDaoTest {
 
     @Test
     public void testFollow() {
-        List<UserData> pre = dao.getFollowedBy("ip.man");
+        List<UserEntity> pre = dao.getFollowedBy("ip.man");
         dao.follow("ip.man", "fabio.strozzi");
-        List<UserData> post = dao.getFollowedBy("ip.man");
+        List<UserEntity> post = dao.getFollowedBy("ip.man");
         assertEquals(pre.size() + 1, post.size());
     }
 
     @Test
     public void testUnfollow() {
-        List<UserData> pre = dao.getFollowedBy("ip.man");
+        List<UserEntity> pre = dao.getFollowedBy("ip.man");
         dao.unfollow("ip.man", "hulk.hogan");
-        List<UserData> post = dao.getFollowedBy("ip.man");
+        List<UserEntity> post = dao.getFollowedBy("ip.man");
         assertEquals(pre.size() - 1, post.size());
     }
 }

@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.fabiostrozzi.chirp.dao.ChirpUserEntity;
 import eu.fabiostrozzi.chirp.dao.ChirpsDao;
-import eu.fabiostrozzi.chirp.dao.UserData;
+import eu.fabiostrozzi.chirp.dao.UserEntity;
 import eu.fabiostrozzi.chirp.dao.UsersDao;
 import eu.fabiostrozzi.chirp.rest.Chirp;
 import eu.fabiostrozzi.chirp.rest.User;
@@ -39,7 +40,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public List<User> getFollowedBy(String user) {
-        List<UserData> data = usersDao.getFollowedBy(user);
+        List<UserEntity> data = usersDao.getFollowedBy(user);
         List<User> users = converter.restUsersOf(data);
         return users;
     }
@@ -50,7 +51,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public List<User> getFollowersOf(String user) {
-        List<UserData> data = usersDao.getFollowersOf(user);
+        List<UserEntity> data = usersDao.getFollowersOf(user);
         List<User> users = converter.restUsersOf(data);
         return users;
     }
@@ -60,9 +61,10 @@ public class ChirpsServiceImpl implements ChirpsService {
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#getChirpsOf(java.lang.String)
      */
     @Override
-    public List<Chirp> getChirpsOf(String user) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Chirp> getChirpsFor(String user) {
+        List<ChirpUserEntity> data = chirpsDao.findByUsername(user);
+        List<Chirp> chirps = converter.restChirpsOf(data);
+        return chirps;
     }
 
     /*
@@ -72,7 +74,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public List<Chirp> searchChirpsOf(String user, String key) {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
@@ -82,7 +84,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public boolean userExists(String user) {
-        UserData u = usersDao.getByUsername(user);
+        UserEntity u = usersDao.getByUsername(user);
         return u != null;
     }
 
@@ -110,7 +112,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public boolean isValidToken(String token) {
-        UserData u = usersDao.getByToken(token);
+        UserEntity u = usersDao.getByToken(token);
         return u != null;
     }
 
@@ -120,7 +122,7 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public String getUserByToken(String token) {
-        UserData u = usersDao.getByToken(token);
+        UserEntity u = usersDao.getByToken(token);
         return u != null ? u.getUsername() : null;
     }
 

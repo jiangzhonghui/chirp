@@ -1,4 +1,4 @@
-// UserData.java, created on Jan 19, 2013
+// UserEntity.java, created on Jan 19, 2013
 package eu.fabiostrozzi.chirp.dao;
 
 /**
@@ -6,7 +6,7 @@ package eu.fabiostrozzi.chirp.dao;
  * 
  * @author fabio
  */
-public class UserData {
+public class UserEntity {
     private long id;
     private String username;
     private String firstName;

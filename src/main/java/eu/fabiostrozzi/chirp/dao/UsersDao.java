@@ -27,11 +27,11 @@ public class UsersDao {
     @Qualifier("jdbcTemplate")
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    public static final RowMapper<UserData> USER_MAPPER = new RowMapper<UserData>() {
+    public static final RowMapper<UserEntity> USER_MAPPER = new RowMapper<UserEntity>() {
         @Override
-        public UserData mapRow(ResultSet rs, int line) throws SQLException {
-            UserData u = new UserData();
-            u.setId(rs.getLong("id"));
+        public UserEntity mapRow(ResultSet rs, int line) throws SQLException {
+            UserEntity u = new UserEntity();
+            u.setId(rs.getLong("user_id"));
             u.setFirstName(rs.getString("first_name"));
             u.setLastName(rs.getString("last_name"));
             u.setUsername(rs.getString("username"));
@@ -48,8 +48,8 @@ public class UsersDao {
      * @param token
      * @return
      */
-    public UserData getByToken(String token) {
-        List<UserData> users = jdbcTemplate.query("select * from users where token = :token",
+    public UserEntity getByToken(String token) {
+        List<UserEntity> users = jdbcTemplate.query("select * from users where token = :token",
                 singletonMap("token", token), USER_MAPPER);
         return users.size() == 1 ? users.get(0) : null;
     }
@@ -62,8 +62,8 @@ public class UsersDao {
      * @param user
      * @return
      */
-    public UserData getByUsername(String user) {
-        List<UserData> users = jdbcTemplate.query("select * from users where username = :user",
+    public UserEntity getByUsername(String user) {
+        List<UserEntity> users = jdbcTemplate.query("select * from users where username = :user",
                 singletonMap("user", user), USER_MAPPER);
         return users.size() == 1 ? users.get(0) : null;
     }
@@ -82,12 +82,12 @@ public class UsersDao {
         params.put("friend", friend);
 
         long count = jdbcTemplate.queryForLong("select count(1) from followers where "
-                + "user_id = (select id from users where username = :actor) and "
-                + "followed_id = (select id from users where username = :friend)", params);
+                + "following_id = (select user_id from users where username = :actor) and "
+                + "followed_id = (select user_id from users where username = :friend)", params);
         if (count == 0)
-            jdbcTemplate.update("insert into followers(user_id, followed_id) values ("
-                    + "(select id from users where username = :actor), "
-                    + "(select id from users where username = :friend))", params);
+            jdbcTemplate.update("insert into followers(following_id, followed_id) values ("
+                    + "(select user_id from users where username = :actor), "
+                    + "(select user_id from users where username = :friend))", params);
     }
 
     /**
@@ -102,17 +102,17 @@ public class UsersDao {
         params.put("who", who);
 
         jdbcTemplate.update("delete from followers where "
-                + "user_id = (select id from users where username = :actor) and "
-                + "followed_id = (select id from users where username = :who)", params);
+                + "following_id = (select user_id from users where username = :actor) and "
+                + "followed_id = (select user_id from users where username = :who)", params);
     }
 
     /**
      * @param user
      * @return
      */
-    public List<UserData> getFollowedBy(String user) {
-        List<UserData> users = jdbcTemplate.query("select u.* from users u, followers f "
-                + "where u.id = f.followed_id and f.user_id = (select id from users where username = :user)",
+    public List<UserEntity> getFollowedBy(String user) {
+        List<UserEntity> users = jdbcTemplate.query("select u.* from users u, followers f "
+                + "where u.user_id = f.followed_id and f.following_id = (select user_id from users where username = :user)",
                 singletonMap("user", user), USER_MAPPER);
         return users;
     }
@@ -121,9 +121,9 @@ public class UsersDao {
      * @param user
      * @return
      */
-    public List<UserData> getFollowersOf(String user) {
-        List<UserData> users = jdbcTemplate.query("select u.* from users u, followers f "
-                + "where u.id = f.user_id and f.followed_id = (select id from users where username = :user)",
+    public List<UserEntity> getFollowersOf(String user) {
+        List<UserEntity> users = jdbcTemplate.query("select u.* from users u, followers f "
+                + "where u.user_id = f.following_id and f.followed_id = (select user_id from users where username = :user)",
                 singletonMap("user", user), USER_MAPPER);
         return users;
     }

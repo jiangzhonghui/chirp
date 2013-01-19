@@ -110,7 +110,7 @@ public class MockedChirpsService implements ChirpsService {
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#getChirpsOf(java.lang.String)
      */
     @Override
-    public List<Chirp> getChirpsOf(String user) {
+    public List<Chirp> getChirpsFor(String user) {
         List<Chirp> chirps = chirpsOf.get(user);
         return chirps == null ? new ArrayList<Chirp>() : chirps;
     }
@@ -122,7 +122,7 @@ public class MockedChirpsService implements ChirpsService {
      */
     @Override
     public List<Chirp> searchChirpsOf(String user, String key) {
-        return getChirpsOf(user);
+        return getChirpsFor(user);
     }
 
     /*

@@ -63,7 +63,7 @@ public class RestController {
             if (!service.userExists(user))
                 throw new NotFoundException();
 
-            List<Chirp> chirps = hasText(key) ? service.searchChirpsOf(user, key) : service.getChirpsOf(user);
+            List<Chirp> chirps = hasText(key) ? service.searchChirpsOf(user, key) : service.getChirpsFor(user);
             return chirps;
 
         } catch (NotFoundException e) {

@@ -1,4 +1,4 @@
-// ChirpData.java, created on Jan 19, 2013
+// ChirpEntity.java, created on Jan 19, 2013
 package eu.fabiostrozzi.chirp.dao;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
  * 
  * @author fabio
  */
-public class ChirpData {
+public class ChirpEntity {
     private long id;
     private long userId;
     private String content;
