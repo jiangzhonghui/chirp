@@ -21,6 +21,7 @@ import eu.fabiostrozzi.chirp.rest.User;
  */
 @Service
 public class ChirpsServiceImpl implements ChirpsService {
+    @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(ChirpsServiceImpl.class);
 
     @Autowired

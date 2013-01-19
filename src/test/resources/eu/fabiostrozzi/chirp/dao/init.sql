@@ -62,5 +62,8 @@ CREATE TABLE chirps (
 ) ENGINE=InnoDB;
 
 insert into chirps(user_id, created, content) values((select id from users where username = 'fabio.strozzi'), NOW(), 'My first chirp!');
+insert into chirps(user_id, created, content) values((select id from users where username = 'fabio.strozzi'), NOW(), 'My second chirp!');
+insert into chirps(user_id, created, content) values((select id from users where username = 'fabio.strozzi'), NOW(), 'I like chirp!');
+insert into chirps(user_id, created, content) values((select id from users where username = 'fabio.strozzi'), NOW(), 'Chirp is written in Java!');
 
 COMMIT;

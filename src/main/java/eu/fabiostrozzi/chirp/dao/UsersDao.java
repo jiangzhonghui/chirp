@@ -27,16 +27,16 @@ public class UsersDao {
     @Qualifier("jdbcTemplate")
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<UserData> USER_MAPPER = new RowMapper<UserData>() {
+    public static final RowMapper<UserData> USER_MAPPER = new RowMapper<UserData>() {
         @Override
         public UserData mapRow(ResultSet rs, int line) throws SQLException {
-            UserData ud = new UserData();
-            ud.setId(rs.getLong("id"));
-            ud.setFirstName(rs.getString("first_name"));
-            ud.setLastName(rs.getString("last_name"));
-            ud.setUsername(rs.getString("username"));
-            ud.setToken(rs.getString("token"));
-            return ud;
+            UserData u = new UserData();
+            u.setId(rs.getLong("id"));
+            u.setFirstName(rs.getString("first_name"));
+            u.setLastName(rs.getString("last_name"));
+            u.setUsername(rs.getString("username"));
+            u.setToken(rs.getString("token"));
+            return u;
         }
     };
 
