@@ -57,7 +57,7 @@ public class ChirpsDao {
                 + "from chirps c, users u where c.user_id = u.user_id and "
                 + "(c.user_id = (select user_id from users where username = :user) or "
                 + "c.user_id in (select followed_id from followers "
-                + "where following_id = (select user_id from users where username = :user))) order by c.created",
+                + "where following_id = (select user_id from users where username = :user))) order by c.created desc",
                 singletonMap("user", user), CHIRP_USER_MAPPER);
         return data;
     }
@@ -75,7 +75,7 @@ public class ChirpsDao {
                 + "from chirps c, users u where c.user_id = u.user_id and c.content like :key and "
                 + "(c.user_id = (select user_id from users where username = :user) or "
                 + "c.user_id in (select followed_id from followers "
-                + "where following_id = (select user_id from users where username = :user))) order by c.created",
+                + "where following_id = (select user_id from users where username = :user))) order by c.created desc",
                 params, CHIRP_USER_MAPPER);
 
         return data;

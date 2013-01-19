@@ -60,6 +60,24 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+h1, h2, h3 {
+	color: crimson;
+}
+
+.main {
+	width: 900px;
+	margin: 0 auto;
+}
+
+tbody td.url {
+    width: 300px;
+    font-size: 10pt;
+}
+
+tbody td.method {
+    width: 100px;
+    text-align: center;
+}
 
 
 
@@ -147,16 +165,6 @@ textarea {
 
 .clearfix {
     *zoom: 1;
-}
-
-tbody td.url {
-	width: 400px;
-	font-size: 10pt;
-}
-
-tbody td.method {
-	width: 120px;
-	text-align: center;
 }
 
 /* ==========================================================================
