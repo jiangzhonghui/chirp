@@ -75,7 +75,8 @@ public class RestController {
     }
 
     /**
-     * Get the list of following and followers of a given user.
+     * Get the list of people being followed by the given user and those that are followers of the
+     * user.
      * <p>
      * Anyone is allowed to get them as long as the token is valid.
      * 
@@ -93,7 +94,7 @@ public class RestController {
                 throw new NotFoundException();
 
             Map<String, List<User>> map = new HashMap<String, List<User>>();
-            map.put("following", service.getFollowingOf(user));
+            map.put("followed", service.getFollowedBy(user));
             map.put("followers", service.getFollowersOf(user));
             return map;
 

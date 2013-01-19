@@ -105,4 +105,26 @@ public class UsersDao {
                 + "user_id = (select id from users where username = :actor) and "
                 + "followed_id = (select id from users where username = :who)", params);
     }
+
+    /**
+     * @param user
+     * @return
+     */
+    public List<UserData> getFollowedBy(String user) {
+        List<UserData> users = jdbcTemplate.query("select u.* from users u, followers f "
+                + "where u.id = f.followed_id and f.user_id = (select id from users where username = :user)",
+                singletonMap("user", user), USER_MAPPER);
+        return users;
+    }
+
+    /**
+     * @param user
+     * @return
+     */
+    public List<UserData> getFollowersOf(String user) {
+        List<UserData> users = jdbcTemplate.query("select u.* from users u, followers f "
+                + "where u.id = f.user_id and f.followed_id = (select id from users where username = :user)",
+                singletonMap("user", user), USER_MAPPER);
+        return users;
+    }
 }

@@ -40,10 +40,27 @@ insert into followers(user_id, followed_id) values((select id from users where u
 
 insert into followers(user_id, followed_id) values((select id from users where username = 'jack.sparrow'), (select id from users where username='fabio.strozzi'));
 insert into followers(user_id, followed_id) values((select id from users where username = 'jack.sparrow'), (select id from users where username='ip.man'));
+insert into followers(user_id, followed_id) values((select id from users where username = 'jack.sparrow'), (select id from users where username='tiger.man'));
 
 insert into followers(user_id, followed_id) values((select id from users where username = 'ip.man'), (select id from users where username='hulk.hogan'));
 insert into followers(user_id, followed_id) values((select id from users where username = 'ip.man'), (select id from users where username='tiger.man'));
 
 insert into followers(user_id, followed_id) values((select id from users where username = 'tiger.man'), (select id from users where username='hulk.hogan'));
+
+
+--
+-- Chirps
+--
+DROP TABLE IF EXISTS chirps;
+
+CREATE TABLE chirps (
+    id int(40) NOT NULL AUTO_INCREMENT,
+    user_id int(40) NOT NULL,
+    content varchar(200) NOT NULL,
+    created timestamp NOT NULL,
+    PRIMARY KEY(id) USING BTREE
+) ENGINE=InnoDB;
+
+insert into chirps(user_id, created, content) values((select id from users where username = 'fabio.strozzi'), NOW(), 'My first chirp!');
 
 COMMIT;

@@ -7,8 +7,9 @@ import eu.fabiostrozzi.chirp.rest.Chirp;
 import eu.fabiostrozzi.chirp.rest.User;
 
 /**
- * @author fabio
+ * Chirps service layer.
  * 
+ * @author fabio
  */
 public interface ChirpsService {
 
@@ -16,7 +17,7 @@ public interface ChirpsService {
      * @param user
      * @return
      */
-    List<User> getFollowingOf(String user);
+    List<User> getFollowedBy(String user);
 
     /**
      * @param user

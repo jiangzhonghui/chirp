@@ -29,14 +29,18 @@ public class ChirpsServiceImpl implements ChirpsService {
     @Autowired
     private ChirpsDao chirpsDao;
 
+    @Autowired
+    private Converter converter;
+
     /*
      * (non-Javadoc)
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#getFollowingOf(java.lang.String)
      */
     @Override
-    public List<User> getFollowingOf(String user) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<User> getFollowedBy(String user) {
+        List<UserData> data = usersDao.getFollowedBy(user);
+        List<User> users = converter.restUsersOf(data);
+        return users;
     }
 
     /*
@@ -45,8 +49,9 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public List<User> getFollowersOf(String user) {
-        // TODO Auto-generated method stub
-        return null;
+        List<UserData> data = usersDao.getFollowersOf(user);
+        List<User> users = converter.restUsersOf(data);
+        return users;
     }
 
     /*

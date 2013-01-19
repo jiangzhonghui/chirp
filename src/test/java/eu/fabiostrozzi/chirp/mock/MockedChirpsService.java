@@ -90,7 +90,7 @@ public class MockedChirpsService implements ChirpsService {
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#getFollowingOf(java.lang.String)
      */
     @Override
-    public List<User> getFollowingOf(String user) {
+    public List<User> getFollowedBy(String user) {
         List<User> list = following.get(user);
         return list == null ? new ArrayList<User>() : list;
     }
