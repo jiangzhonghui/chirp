@@ -22,7 +22,6 @@ import eu.fabiostrozzi.chirp.rest.User;
  */
 @Service
 public class ChirpsServiceImpl implements ChirpsService {
-    @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(ChirpsServiceImpl.class);
 
     @Autowired
@@ -95,6 +94,10 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public void follow(String actor, String friend) {
+        if (actor.equals(friend)) {
+            log.error("Invalid attempt to make user '{}' follow himself", actor);
+            throw new InvalidOperationException("User cannot follow himself");
+        }
         usersDao.follow(actor, friend);
     }
 
@@ -104,6 +107,10 @@ public class ChirpsServiceImpl implements ChirpsService {
      */
     @Override
     public void unfollow(String actor, String who) {
+        if (actor.equals(who)) {
+            log.error("Invalid attempt to make user '{}' unfollow himself", actor);
+            throw new InvalidOperationException("User cannot unfollow himself");
+        }
         usersDao.unfollow(actor, who);
     }
 

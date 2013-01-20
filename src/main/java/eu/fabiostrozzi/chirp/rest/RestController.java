@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import eu.fabiostrozzi.chirp.service.ChirpsService;
+import eu.fabiostrozzi.chirp.service.InvalidOperationException;
 
 /**
  * REST api controller.
@@ -44,6 +45,10 @@ public class RestController {
     @SuppressWarnings("serial")
     public class IntSrvErrorException extends Exception {}
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @SuppressWarnings("serial")
+    public class ForbiddenException extends Exception {}
+
     /**
      * Get the chirps/tweets of a given user.
      * <p>
@@ -53,6 +58,10 @@ public class RestController {
      * @param key
      * @param token
      * @return
+     * @throws IntSrvErrorException
+     *             If something wrong, unexpectedly happened
+     * @throws NotFoundException
+     *             If specified user cannot be found
      */
     @RequestMapping(value = "/{user}/chirps", method = RequestMethod.GET)
     public @ResponseBody
@@ -83,6 +92,10 @@ public class RestController {
      * @param user
      * @param token
      * @return
+     * @throws IntSrvErrorException
+     *             If something wrong, unexpectedly happened
+     * @throws NotFoundException
+     *             If specified user cannot be found
      */
     @RequestMapping(value = "/{user}/people", method = RequestMethod.GET)
     public @ResponseBody
@@ -114,11 +127,17 @@ public class RestController {
      * @param user
      * @param token
      * @return
+     * @throws IntSrvErrorException
+     *             If something wrong, unexpectedly happened
+     * @throws NotFoundException
+     *             If specified user cannot be found
+     * @throws ForbiddenException
+     *             If authenticated user tries to follow himself
      */
     @RequestMapping(value = "/{user}/follow", method = RequestMethod.PUT)
     public @ResponseBody
     Boolean follow(@PathVariable String user, @RequestHeader(value = TOKEN, required = false) String token)
-            throws IntSrvErrorException, NotFoundException {
+            throws IntSrvErrorException, NotFoundException, ForbiddenException {
         try {
             if (!service.userExists(user))
                 throw new NotFoundException();
@@ -129,6 +148,8 @@ public class RestController {
 
         } catch (NotFoundException e) {
             throw e;
+        } catch (InvalidOperationException e) {
+            throw new ForbiddenException();
         } catch (Exception e) {
             log.error("Unexpected error occurred while calling '/api/{}/follow'", user, e);
             throw new IntSrvErrorException();
@@ -138,11 +159,17 @@ public class RestController {
     /**
      * Unfollows a user.
      * <p>
-     * User identified by the input token will stop following the given user.
+     * User identified by the input token will stop following the given user. happened
      * 
      * @param user
      * @param token
      * @return
+     * @throws IntSrvErrorException
+     *             If something wrong, unexpectedly happened
+     * @throws NotFoundException
+     *             If specified user cannot be found
+     * @throws ForbiddenException
+     *             If authenticated user tries to unfollow himself
      */
     @RequestMapping(value = "/{user}/unfollow", method = RequestMethod.PUT)
     public @ResponseBody
