@@ -4,6 +4,11 @@ import requests
 import unittest
 
 base_url = "http://chirp-fabiostrozzi.rhcloud.com/api/"
+#base_url = "http://localhost:8080/api/"
+
+fabios_key = '1#fc57c1fc-60fd-11e2-8d5b-544249f16afb'
+ipmans_key = '5#54dd989c-60fe-11e2-a0f3-544249f16afb'
+
 
 class ChirpRestClientTest(unittest.TestCase):
 
@@ -12,7 +17,7 @@ class ChirpRestClientTest(unittest.TestCase):
         Tests the /api/{user}/people REST interface.
         Checks the number of followed people and followers.
         '''
-        r = requests.get(base_url + 'hulk.hogan' + '/people', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        r = requests.get(base_url + 'hulk.hogan' + '/people', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(0, len(j[u'followed']), "Hulk Hogan follows nobody")
@@ -23,7 +28,7 @@ class ChirpRestClientTest(unittest.TestCase):
         Tests the /api/{user}/chirps REST interface.
         Checks the number of returned posts.
         '''
-        r = requests.get(base_url + 'fabio.strozzi' + '/chirps', headers={'Chirp-Token' : 'fc57c1fc-60fd-11e2-8d5b-544249f16afb'})
+        r = requests.get(base_url + 'fabio.strozzi' + '/chirps', headers={'Chirp-Token' : fabios_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(17, len(j), "17 posts considering Fabio's and his followers'")
@@ -41,7 +46,7 @@ class ChirpRestClientTest(unittest.TestCase):
         Tests the /api/{user}/chirps?search={keyword} REST interface.
         Checks the number of returned posts when using a filtering keyword.
         '''
-        r = requests.get(base_url + 'fabio.strozzi' + '/chirps', params={'search':'bOaT'}, headers={'Chirp-Token' : 'fc57c1fc-60fd-11e2-8d5b-544249f16afb'})
+        r = requests.get(base_url + 'fabio.strozzi' + '/chirps', params={'search':'bOaT'}, headers={'Chirp-Token' : fabios_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(2, len(j), "Just two posts contain the 'boat' word")
@@ -76,7 +81,7 @@ class ChirpRestClientTest(unittest.TestCase):
         Ensures that the returned HTTP code si 404 (not found).
         '''
         # token must be valid in this case, otherwise the 401 will be returned
-        r = requests.get(base_url + 'batman' + '/people', headers={'Chirp-Token' : 'fc57c1fc-60fd-11e2-8d5b-544249f16afb'})
+        r = requests.get(base_url + 'batman' + '/people', headers={'Chirp-Token' : fabios_key})
         self.assertEquals(404, r.status_code, "Expected the 404 HTTP code")
 
     def test_follow_unfollow(self):
@@ -85,31 +90,31 @@ class ChirpRestClientTest(unittest.TestCase):
         Also tests that unfollowing the same person will revert the effect.
         '''
         # lets see how many person ip.man is following
-        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         followed_by_ip_man = len(j[u'followed'])
 
-        # here we have ip.man (identified by 54dd989c-60fe-11e2-a0f3-544249f16afb) starting to follow jack sparrow
-        r = requests.put(base_url + 'jack.sparrow' + '/follow', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        # here we have ip.man (identified by 5#54dd989c-60fe-11e2-a0f3-544249f16afb) starting to follow jack sparrow
+        r = requests.put(base_url + 'jack.sparrow' + '/follow', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(True, j, "Successfully following Jack Sparrow from now on")
 
         # counting followed people again
-        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(followed_by_ip_man + 1, len(j[u'followed']), "Following one more person")
 
         # now stop following jack
-        r = requests.put(base_url + 'jack.sparrow' + '/unfollow', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        r = requests.put(base_url + 'jack.sparrow' + '/unfollow', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(True, j, "Time to stop following Jack Sparrow")
 
         # counting followed people again
-        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
+        r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : ipmans_key})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
         j = r.json()
         self.assertEquals(followed_by_ip_man, len(j[u'followed']), "Following the initial amount of people")

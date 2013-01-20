@@ -57,14 +57,24 @@ public interface ChirpsService {
     void unfollow(String actor, String who);
 
     /**
+     * Tests whether a token is valid or not.
+     * <p>
+     * Valid tokens have the following format:
+     * 
+     * <pre>
+     * user_id#authentication_key
+     * </pre>
+     * 
      * @param token
      * @return
+     * @throws Exception
      */
-    boolean isValidToken(String token);
+    boolean isValidToken(String token) throws Exception;
 
     /**
      * @param token
      * @return
+     * @throws Exception
      */
-    String getUserByToken(String token);
+    String getUserByToken(String token) throws Exception;
 }

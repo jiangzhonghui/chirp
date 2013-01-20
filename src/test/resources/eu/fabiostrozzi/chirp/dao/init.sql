@@ -12,15 +12,19 @@ CREATE TABLE users (
   first_name varchar(50) NOT NULL,
   last_name varchar(50) NOT NULL,
   username varchar(50) NOT NULL,
-  token varchar(50),
+  salt varchar(10) NOT NULL,
+  hash varchar(50),
   PRIMARY KEY (user_id) USING BTREE
 ) ENGINE=InnoDB;
 
-insert into users(username, first_name, last_name, token) values('fabio.strozzi', 'Fabio', 'Strozzi', 'fc57c1fc-60fd-11e2-8d5b-544249f16afb');
-insert into users(username, first_name, last_name, token) values('jack.sparrow', 'Jack', 'Sparrow', '02392a98-60fe-11e2-8d6e-544249f16afb');
-insert into users(username, first_name, last_name) values('tiger.man', 'Tiger', 'Man');
-insert into users(username, first_name, last_name) values('hulk.hogan', 'Hulk', 'Hogan');
-insert into users(username, first_name, last_name, token) values('ip.man', 'Ip', 'Man', '54dd989c-60fe-11e2-a0f3-544249f16afb');
+-- token will be 1#fc57c1fc-60fd-11e2-8d5b-544249f16afb
+insert into users(username, first_name, last_name, salt, hash) values('fabio.strozzi', 'Fabio', 'Strozzi', '15264', '309b0f0dce80ec2a1e7dbb3e4a0d38d3');
+-- token will be 2#02392a98-60fe-11e2-8d6e-544249f16afb
+insert into users(username, first_name, last_name, salt, hash) values('jack.sparrow', 'Jack', 'Sparrow', '26764', 'e0442a61f9d7659fd02522f1d5dc4daf');
+insert into users(username, first_name, last_name, salt, hash) values('tiger.man', 'Tiger', 'Man', '1960', NULL);
+insert into users(username, first_name, last_name, salt, hash) values('hulk.hogan', 'Hulk', 'Hogan', '25776', NULL);
+-- token will be 5#54dd989c-60fe-11e2-a0f3-544249f16afb
+insert into users(username, first_name, last_name, salt, hash) values('ip.man', 'Ip', 'Man', '4500', '6121da18caf1bdf04399b4c4d4ff8088');
 
 --
 -- Followers

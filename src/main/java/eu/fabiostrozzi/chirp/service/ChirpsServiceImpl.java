@@ -1,6 +1,9 @@
 // ChirpsServiceImpl.java, created on Jan 17, 2013
 package eu.fabiostrozzi.chirp.service;
 
+import static org.springframework.util.StringUtils.hasText;
+
+import java.security.MessageDigest;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,6 +35,16 @@ public class ChirpsServiceImpl implements ChirpsService {
 
     @Autowired
     private Converter converter;
+
+    private class Token {
+        private long userId;
+        private String key;
+
+        public Token(long userId, String key) {
+            this.userId = userId;
+            this.key = key;
+        }
+    }
 
     /*
      * (non-Javadoc)
@@ -119,9 +132,74 @@ public class ChirpsServiceImpl implements ChirpsService {
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#isValidToken(java.lang.String)
      */
     @Override
-    public boolean isValidToken(String token) {
-        UserEntity u = usersDao.getByToken(token);
-        return u != null;
+    public boolean isValidToken(String token) throws Exception {
+        Token t = parseToken(token);
+
+        UserEntity u = usersDao.get(t.userId);
+        if (u == null)
+            return false;
+
+        return checkSecret(t.key, u.getSalt(), u.getHash());
+    }
+
+    /**
+     * Checks that the secret hash can be obtained using the input key and salt.
+     * 
+     * @param key
+     * @param salt
+     * @param hash
+     * @return
+     * @throws Exception
+     */
+    private boolean checkSecret(String key, String salt, String hash) throws Exception {
+        String secret = salt + key;
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] bytes = md.digest(secret.getBytes());
+        String digest = bytesToHex(bytes);
+        return digest.equals(hash);
+    }
+
+    /**
+     * @param token
+     * @return
+     */
+    private Token parseToken(String token) {
+        if (!hasText(token)) {
+            log.error("Attempt to authenticate using a null or empty token");
+            throw new AuthenticationException("Attempt to authenticate using a null or empty token");
+        }
+
+        int index = token.indexOf('#');
+        if (index <= 0 || index == token.length() - 1) {
+            log.error("Invalid authentication token format in token '{}'", token);
+            throw new AuthenticationException("Invalid authentication token format");
+        }
+
+        String userPart = token.substring(0, index);
+        String keyPart = token.substring(index + 1);
+
+        long userId = 0;
+        try {
+            userId = Long.parseLong(userPart);
+        } catch (NumberFormatException e) {
+            log.error("Cannot extract user identifier from token '{}'", token);
+            throw new AuthenticationException("Cannot extract user identifier");
+        }
+
+        return new Token(userId, keyPart);
+    }
+
+    /**
+     * Transaltes bytes to hex format.
+     * 
+     * @param bytes
+     * @return
+     */
+    private String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++)
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        return sb.toString();
     }
 
     /*
@@ -129,9 +207,15 @@ public class ChirpsServiceImpl implements ChirpsService {
      * @see eu.fabiostrozzi.chirp.service.ChirpsService#getUserByToken(java.lang.String)
      */
     @Override
-    public String getUserByToken(String token) {
-        UserEntity u = usersDao.getByToken(token);
-        return u != null ? u.getUsername() : null;
+    public String getUserByToken(String token) throws Exception {
+        Token t = parseToken(token);
+
+        UserEntity u = usersDao.get(t.userId);
+        if (u == null)
+            return null;
+
+        boolean success = checkSecret(t.key, u.getSalt(), u.getHash());
+        return success ? u.getUsername() : null;
     }
 
 }

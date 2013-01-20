@@ -35,22 +35,23 @@ public class UsersDao {
             u.setFirstName(rs.getString("first_name"));
             u.setLastName(rs.getString("last_name"));
             u.setUsername(rs.getString("username"));
-            u.setToken(rs.getString("token"));
+            u.setSalt(rs.getString("salt"));
+            u.setHash(rs.getString("hash"));
             return u;
         }
     };
 
     /**
-     * Gets the only user that has the given token.
-     * <p>
-     * If none is found, returns null.
+     * Retrieves a user given his identifier.
      * 
-     * @param token
-     * @return
+     * @param id
+     *            The user identifier
+     * @return The {@link UserEntity} representing the user if one is found with the given id, null
+     *         otherwise.
      */
-    public UserEntity getByToken(String token) {
-        List<UserEntity> users = jdbcTemplate.query("select * from users where token = :token",
-                singletonMap("token", token), USER_MAPPER);
+    public UserEntity get(long id) {
+        List<UserEntity> users = jdbcTemplate.query("select * from users where user_id = :id", singletonMap("id", id),
+                USER_MAPPER);
         return users.size() == 1 ? users.get(0) : null;
     }
 
@@ -111,9 +112,10 @@ public class UsersDao {
      * @return
      */
     public List<UserEntity> getFollowedBy(String user) {
-        List<UserEntity> users = jdbcTemplate.query("select u.* from users u, followers f "
-                + "where u.user_id = f.followed_id and f.following_id = (select user_id from users where username = :user)",
-                singletonMap("user", user), USER_MAPPER);
+        List<UserEntity> users = jdbcTemplate
+                .query("select u.* from users u, followers f "
+                        + "where u.user_id = f.followed_id and f.following_id = (select user_id from users where username = :user)",
+                        singletonMap("user", user), USER_MAPPER);
         return users;
     }
 
@@ -122,9 +124,10 @@ public class UsersDao {
      * @return
      */
     public List<UserEntity> getFollowersOf(String user) {
-        List<UserEntity> users = jdbcTemplate.query("select u.* from users u, followers f "
-                + "where u.user_id = f.following_id and f.followed_id = (select user_id from users where username = :user)",
-                singletonMap("user", user), USER_MAPPER);
+        List<UserEntity> users = jdbcTemplate
+                .query("select u.* from users u, followers f "
+                        + "where u.user_id = f.following_id and f.followed_id = (select user_id from users where username = :user)",
+                        singletonMap("user", user), USER_MAPPER);
         return users;
     }
 }

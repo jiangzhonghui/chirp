@@ -28,28 +28,15 @@ public class UsersDaoTest {
     private UsersDao dao;
 
     @Test
-    public void testGetByToken() {
-        UserEntity user = dao.getByToken("fc57c1fc-60fd-11e2-8d5b-544249f16afb");
-        assertNotNull(user);
-        assertEquals("fabio.strozzi", user.getUsername());
-        assertEquals("Fabio", user.getFirstName());
-        assertEquals("Strozzi", user.getLastName());
-        assertEquals("fc57c1fc-60fd-11e2-8d5b-544249f16afb", user.getToken());
-
-        user = dao.getByToken("123456767");
-        assertNull(user);
-    }
-
-    @Test
     public void testGetByUsername() {
         UserEntity user = dao.getByUsername("fabio.strozzi");
         assertNotNull(user);
         assertEquals("fabio.strozzi", user.getUsername());
         assertEquals("Fabio", user.getFirstName());
         assertEquals("Strozzi", user.getLastName());
-        assertEquals("fc57c1fc-60fd-11e2-8d5b-544249f16afb", user.getToken());
+        assertEquals("fc57c1fc-60fd-11e2-8d5b-544249f16afb", user.getHash());
 
-        user = dao.getByToken("john.doe");
+        user = dao.getByUsername("john.doe");
         assertNull(user);
     }
 

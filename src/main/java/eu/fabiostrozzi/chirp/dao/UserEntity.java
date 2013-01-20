@@ -11,7 +11,8 @@ public class UserEntity {
     private String username;
     private String firstName;
     private String lastName;
-    private String token;
+    private String salt;
+    private String hash;
 
     /**
      * @return the id
@@ -21,7 +22,8 @@ public class UserEntity {
     }
 
     /**
-     * @param id the id to set
+     * @param id
+     *            the id to set
      */
     public void setId(long id) {
         this.id = id;
@@ -73,17 +75,32 @@ public class UserEntity {
     }
 
     /**
-     * @return the token
+     * @return the salt
      */
-    public String getToken() {
-        return token;
+    public String getSalt() {
+        return salt;
     }
 
     /**
-     * @param token
-     *            the token to set
+     * @param salt
+     *            the salt to set
      */
-    public void setToken(String token) {
-        this.token = token;
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * @return the hash
+     */
+    public String getHash() {
+        return hash;
+    }
+
+    /**
+     * @param hash
+     *            the hash to set
+     */
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

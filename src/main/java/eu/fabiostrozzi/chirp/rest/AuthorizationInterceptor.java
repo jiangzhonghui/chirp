@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import eu.fabiostrozzi.chirp.service.AuthenticationException;
 import eu.fabiostrozzi.chirp.service.ChirpsService;
 
 /**
@@ -49,6 +50,10 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             }
 
             return true;
+        } catch (AuthenticationException e) {
+            log.error("Cannot authenticate call to '{}'", request.getRequestURI(), e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
         } catch (Exception e) {
             log.error("Unexpected exception while authorizing call to '{}'", request.getRequestURI(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -28,7 +28,14 @@
 		<p>
 			Calls to Chirp must provide an authentication token via a custom HTTP
 			header, like the following one: <br />
-			<code> Chirp-Token: fc5e1e0c-60fd-aa11-8d5b-754980f16afb </code>
+			<code> Chirp-Token: 1#fc57c1fc-60fd-11e2-8d5b-544249f16afb</code>
+		</p>
+		<p>
+			The first part of the token before the # (in the above example
+			<code>1</code>
+			) identifies the user while the second part (
+			<code>fc57c1fc-60fd-11e2-8d5b-544249f16afb</code>
+			) represents the secret key.
 		</p>
 		<h3>Responses</h3>
 		<p>If call is successful, Chirp will reply with a proper JSON
