@@ -36,9 +36,9 @@ class ChirpRestClientTest(unittest.TestCase):
         theirs = [p for p in j if p[u'user'][u'username'] == 'tiger.man']
         self.assertEquals(3, len(theirs), "3 chirps are from Tiger")
 
-    def test_chirps(self):
+    def test_search(self):
         '''
-        Tests the /api/{user}/chirps REST interface.
+        Tests the /api/{user}/chirps?search={keyword} REST interface.
         Checks the number of returned posts when using a filtering keyword.
         '''
         r = requests.get(base_url + 'fabio.strozzi' + '/chirps', params={'search':'bOaT'}, headers={'Chirp-Token' : 'fc57c1fc-60fd-11e2-8d5b-544249f16afb'})
@@ -46,7 +46,11 @@ class ChirpRestClientTest(unittest.TestCase):
         j = r.json()
         self.assertEquals(2, len(j), "Just two posts contain the 'boat' word")
 
-    def test_unathorized(self):
+    def test_unauthorized(self):
+        '''
+        Tests unauthorized access to the API.
+        Ensures that the returned HTTP code is 401.
+        '''
         r = requests.get(base_url + 'fabio.strozzi' + '/chirps')
         self.assertEquals(401, r.status_code, "Expected the 401 HTTP code")
         r = requests.get(base_url + 'fabio.strozzi' + '/people')
@@ -59,15 +63,27 @@ class ChirpRestClientTest(unittest.TestCase):
         self.assertEquals(401, r.status_code, "Expected the 401 HTTP code")
 
     def test_invalid_token(self):
+        '''
+        Tests the use of an unauthorized token.
+        Ensures that the returned HTTP code si 401.
+        '''
         r = requests.get(base_url + 'hulk.hogan' + '/people', headers={'Chirp-Token' : '1111-1111-1111-1111'})
         self.assertEquals(401, r.status_code, "Expected the 401 HTTP code")
 
     def test_not_found(self):
+        '''
+        Tests a request against an non-existing user.
+        Ensures that the returned HTTP code si 404 (not found).
+        '''
         # token must be valid in this case, otherwise the 401 will be returned
         r = requests.get(base_url + 'batman' + '/people', headers={'Chirp-Token' : 'fc57c1fc-60fd-11e2-8d5b-544249f16afb'})
         self.assertEquals(404, r.status_code, "Expected the 404 HTTP code")
 
     def test_follow_unfollow(self):
+        '''
+        Tests whether following a person causes changes to the user's list of followed people.
+        Also tests that unfollowing the same person will revert the effect.
+        '''
         # lets see how many person ip.man is following
         r = requests.get(base_url + 'ip.man' + '/people', headers={'Chirp-Token' : '54dd989c-60fe-11e2-a0f3-544249f16afb'})
         self.assertEquals(200, r.status_code, "Expected the 200 HTTP code")
