@@ -24,15 +24,26 @@
 			tweets!</p>
 
 		<h2>API Documentation</h2>
+		<h3>Authentication</h3>
 		<p>
 			Calls to Chirp must provide an authentication token via a custom HTTP
 			header, like the following one: <br />
 			<code> Chirp-Token: fc5e1e0c-60fd-aa11-8d5b-754980f16afb </code>
 		</p>
-		<p>Any call that either does not include the token or provides an
-			invalid one will return the HTTP error 401 (unauthorized).</p>
+		<h3>Responses</h3>
 		<p>If call is successful, Chirp will reply with a proper JSON
 			response.</p>
+		<p>Any call that either does not include the authentication token
+			or provides an invalid one will return the HTTP error 401
+			(unauthorized).</p>
+		<p>
+			Any call that provides an invalid
+			<code>{user}</code>
+			parameter will return the HTTP error 404 (not found).
+		</p>
+		<p>Any internal server error is returned as HTTP error 500
+			(internal server error).</p>
+		<h3>Interfaces</h3>
 		<p>Next table summarizes the REST interfaces of Chirp.</p>
 		<table border="1">
 			<thead>
