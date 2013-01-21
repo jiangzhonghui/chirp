@@ -34,7 +34,8 @@ public class UsersDaoTest {
         assertEquals("fabio.strozzi", user.getUsername());
         assertEquals("Fabio", user.getFirstName());
         assertEquals("Strozzi", user.getLastName());
-        assertEquals("fc57c1fc-60fd-11e2-8d5b-544249f16afb", user.getHash());
+        assertEquals("309b0f0dce80ec2a1e7dbb3e4a0d38d3", user.getHash());
+        assertEquals("15264", user.getSalt());
 
         user = dao.getByUsername("john.doe");
         assertNull(user);
